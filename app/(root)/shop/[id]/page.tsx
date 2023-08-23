@@ -108,7 +108,7 @@ const MainDataSection = ({ payment }: { payment: Payment }) => {
 
   return (
     <section
-      className='max-container  bg-[rgb(5,6,6)] max-sm:rounded-b-none rounded-lg py-16 max-sm:px-2  lg:px-32 flex flex-col  gap-y-10 lg:flex-row items-center justify-around lg:items-start max-sm:pb-28'>
+      className='max-container  bg-black-2 max-sm:rounded-b-none rounded-lg py-16 max-sm:px-2  lg:px-32 flex flex-col  gap-y-10 lg:flex-row items-center justify-around lg:items-start max-sm:pb-28'>
       <article className='flex flex-col gap-y-5 '>
         <Divider />
         <PaymentMethods handleSelectPayMethod={handlePayMethodClick} selectedPayMethod={selectedPayMethod} />
