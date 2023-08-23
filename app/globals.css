@@ -1,27 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Handjet:wght@400;600&family=Montserrat:wght@400;500&family=Palanquin:wght@400;500&family=Poppins:wght@200;400;500&family=Righteous&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@layer components {
+  .max-container {
+    max-width: 1440px;
+    margin: 0 auto;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer utilities {
+  .padding-x {
+    @apply px-8 sm:px-16;
+  }
 }
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ffc350;
+  border-radius: 30px;
+  outline: 1px solid black;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #75757520;
+}
+
+
+/* 
+input::placeholder{
+  font-size: 20px;
+  font-weight: 300;
+  color:#757575;
+
+} */
