@@ -1,5 +1,6 @@
 import { createOrder } from "@lib/actions/order.actions";
 import { fetchPayer } from "@lib/actions/payer.actions";
+import Payer from "@lib/models/payer.model";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -10,6 +11,15 @@ export default async function handler(
     if (req.body) {
       // const hiddenDescription: string[] = req.body["tr_crc"].split(" ");
       // const payerId = fetchPayer("Kubyhayy");
+
+      Payer.findOneAndUpdate(
+        { nick: "Kubyhayy" },
+        {
+          nick: "Kubyhayy",
+          email: "jakupkret@gmail.com",
+        },
+        { upsert: true },
+      );
 
       await createOrder({
         target: "Ranga VIP",

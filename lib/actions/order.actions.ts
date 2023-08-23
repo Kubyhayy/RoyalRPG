@@ -1,4 +1,4 @@
-"use server"
+"use server";
 import Order from "@lib/models/order.model";
 import Payer from "@lib/models/payer.model";
 import { connectToDB } from "@lib/mongoose";
@@ -28,10 +28,11 @@ export async function createOrder({
       expirationDate,
       payer,
     });
-
+    
     await Payer.findByIdAndUpdate(payer, {
       $push: { orders: createOrder._id },
     });
+
   } catch (e: any) {
     throw new Error(`Failed to create order : ${e.message}`);
   }
