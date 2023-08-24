@@ -2,7 +2,6 @@ import { createOrder, grantOrderItem } from "@lib/actions/order.actions";
 import { fetchPayer } from "@lib/actions/payer.actions";
 
 import { NextApiRequest, NextApiResponse } from "next";
-import { Rcon } from "rcon-client";
 
 export default async function handler(
   req: NextApiRequest,

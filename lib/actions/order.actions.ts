@@ -1,4 +1,3 @@
-"use server";
 import Order from "@lib/models/order.model";
 import Payer from "@lib/models/payer.model";
 import { connectToDB } from "@lib/database";
