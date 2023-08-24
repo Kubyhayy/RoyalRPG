@@ -8,6 +8,7 @@ import Image from 'next/image';
 import React from 'react'
 
 
+
 const ShopPage = ({ params }: { params: { id: number } }) => {
 
   const item = ShopItems[params.id];
@@ -103,6 +104,8 @@ const MainDataSection = ({ payment }: { payment: Payment }) => {
         window.scrollTo({ top: 0, behavior: "smooth" })
       }
     }
+    console.log("wgwg");
+
   }
 
 

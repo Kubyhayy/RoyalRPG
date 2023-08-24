@@ -4,6 +4,7 @@ const orderSchema = new mongoose.Schema({
   name: { type: String, required: true },
   days: { type: Number, required: true },
   price: { type: Number, required: true },
+  granted: { type: Boolean, default: false },
   payer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Payer",
