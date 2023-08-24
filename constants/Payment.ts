@@ -18,7 +18,6 @@ export class Payment {
   private price: number;
   private description: string;
   private itemVariantID: number | null;
-  private hiddenDescription: string;
   private payMethod: PayMethod | null;
   private additionalValues: {
     isDiscounted: boolean;
@@ -31,7 +30,6 @@ export class Payment {
     this.price = 0;
     this.itemVariantID = 0;
     this.description = item.name;
-    this.hiddenDescription = "";
     this.payMethod = null;
     this.additionalValues = { isDiscounted: false, hasAgreed: false };
   }

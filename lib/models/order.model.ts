@@ -1,15 +1,17 @@
 import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
-  purchaseDate: { type: Date, default: Date.now },
-  target: { String, required: true },
-  days: { String, required: true },
-  price: { String, required: true },
-  expirationDate: { type: Date, required: true },
+  name: { type: String, required: true },
+  days: { type: Number, required: true },
+  price: { type: Number, required: true },
   payer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Payer",
-    required: true,
+  },
+  purchaseDate: { type: Date, default: Date.now },
+  expirationDate: {
+    type: Date,
+    default: +new Date() + 30 * 24 * 60 * 60 * 1000,
   },
 });
 

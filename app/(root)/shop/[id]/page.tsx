@@ -1,10 +1,11 @@
 "use client";
+import { getAllOrdersByNick } from '@lib/actions/payer.actions';
 import { PayMethods, PurchaseInfo, ShopItems } from '@constants'
 import { Payment } from '@constants/Payment';
 import { Item } from '@constants/item'
 import { PayMethod } from '@constants/payMethod';
 import Image from 'next/image';
-import React, { useEffect } from 'react'
+import React from 'react'
 
 
 const ShopPage = ({ params }: { params: { id: number } }) => {
@@ -90,7 +91,7 @@ const MainDataSection = ({ payment }: { payment: Payment }) => {
     });
   }
 
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (payment.isReady() && agreed) {
       const response = await fetch("/api/tpay/create", { method: "POST", body: JSON.stringify(payment) });
@@ -129,10 +130,10 @@ const MainDataSection = ({ payment }: { payment: Payment }) => {
           <p className='text-white font-poppins text-sm'>Zgadzam się z warunkami umowy.</p>
         </div>
 
-        <div className='w-full'>
-          <button onClick={handleSubmit} type="submit" className='bg-purple-dark text-center text-white text-3xl font-poppins rounded-lg w-full'>Zakup!</button>
+        <form className='w-full' onSubmit={handleSubmit}>
+          <button type="submit" className='bg-purple-dark text-center text-white text-3xl font-poppins rounded-lg w-full'>Zakup!</button>
           <p ref={invalidDataTextRef} className='text-red-700 hidden text-center'>Niewłaściwe dane</p>
-        </div>
+        </form>
       </article>
     </section>
   )

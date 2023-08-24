@@ -1,39 +1,30 @@
 "use server";
 import Order from "@lib/models/order.model";
 import Payer from "@lib/models/payer.model";
-import { connectToDB } from "@lib/mongoose";
+import { connectToDB } from "@lib/database";
 
-interface OrderProps {
-  target: string;
-  days: string;
-  price: string;
-  expirationDate: string;
-  payer: string;
+interface Params {
+  name: string;
+  days: number;
+  price: number;
+  payerId: string;
 }
-
 export async function createOrder({
-  target,
+  name,
   days,
   price,
-  expirationDate,
-  payer,
-}: OrderProps) {
+  payerId,
+}: Params): Promise<void> {
   try {
-    connectToDB();
-
-    const createOrder = await Order.create({
-      target,
-      days,
-      price,
-      expirationDate,
-      payer,
+    await connectToDB();
+    const order = await Order.create({
+      name: name,
+      days: days,
+      price: price,
+      payer: payerId,
     });
-    
-    await Payer.findByIdAndUpdate(payer, {
-      $push: { orders: createOrder._id },
-    });
-
-  } catch (e: any) {
-    throw new Error(`Failed to create order : ${e.message}`);
+    await Payer.findByIdAndUpdate(payerId, { $push: { orders: order._id } });
+  } catch (error: any) {
+    throw new Error(`Failed to create order ${error?.message}`);
   }
 }

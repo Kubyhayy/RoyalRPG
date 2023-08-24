@@ -1,3 +1,4 @@
+import Payer from "@lib/models/payer.model";
 import mongoose from "mongoose";
 
 let isConnected = false;

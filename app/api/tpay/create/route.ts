@@ -1,5 +1,3 @@
-import { Payment } from "@constants/Payment";
-import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 async function getAccessToken() {
@@ -38,9 +36,13 @@ export async function POST(req: NextRequest) {
             email: payment.buyer.email,
             name: payment.buyer.nick,
           },
-          hiddenDescription: `${payment.buyer.nick}&${payment.item.name}&${
-            payment.price
-          }&${payment.item.priceSteps[payment.itemVariantID].days}`,
+          hiddenDescription: JSON.stringify({
+            nick: payment.buyer.nick,
+            email: payment.buyer.email,
+            item_name: payment.item.name,
+            price: payment.price,
+            days: `${payment.item.priceSteps[payment.itemVariantID].days}`,
+          }),
         }),
         headers: {
           "Content-Type": "application/json",

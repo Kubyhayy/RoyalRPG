@@ -1,6 +1,5 @@
 import { createOrder } from "@lib/actions/order.actions";
 import { fetchPayer } from "@lib/actions/payer.actions";
-import Payer from "@lib/models/payer.model";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -8,29 +7,22 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   try {
-    if (req.body) {
-      // const hiddenDescription: string[] = req.body["tr_crc"].split(" ");
-      // const payerId = fetchPayer("Kubyhayy");
+    const hiddenDescription = JSON.parse(req.body["tr_crc"]);
 
-      Payer.findOneAndUpdate(
-        { nick: "Kubyhayy" },
-        {
-          nick: "Kubyhayy",
-          email: "jakupkret@gmail.com",
-        },
-        { upsert: true },
-      );
+    const payer = await fetchPayer(
+      hiddenDescription.nick,
+      hiddenDescription.email,
+    );
 
-      await createOrder({
-        target: "Ranga VIP",
-        days: "30",
-        price: "15",
-        expirationDate: "15.0",
-        payer: `Kubyhayy`,
-      });
-    }
+    await createOrder({
+      name: hiddenDescription.item_name,
+      days: hiddenDescription.days,
+      price: hiddenDescription.price,
+      payerId: payer._id,
+    });
+
     res.status(200).send("TRUE");
   } catch (e) {
-    res.status(500).send({ FALSE: e });
+    res.status(501).send({ FALSE: e });
   }
 }

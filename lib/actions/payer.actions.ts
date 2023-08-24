@@ -1,13 +1,37 @@
 "use server";
-
+import Order from "@lib/models/order.model";
 import Payer from "@lib/models/payer.model";
-import { connectToDB } from "@lib/mongoose";
+import { connectToDB } from "@lib/database";
 
-export async function fetchPayer(nick: string) {
+export async function fetchPayer(nick: string, email: string) {
   try {
-    connectToDB();
-    return await Payer.findOne({ nick: nick });
-  } catch (e: any) {
-    throw new Error(`Failed to fetch payer ${e.message}`);
+    await connectToDB();
+    let payer = await Payer.findOne({ nick: nick }, { email: email });
+    if (!payer) {
+      payer = Payer.create({
+        nick: nick,
+        email: email,
+      });
+    }
+    return payer;
+  } catch (error: any) {
+    throw new Error(`Unable to fetch payer ${error.message}`);
   }
+}
+
+export async function getAllOrdersByNick({ nick }: { nick: string }) {
+  try {
+    await connectToDB();
+    // It has to be like that to avoid warnings - not my fault...
+    const orders = await JSON.parse(
+      JSON.stringify(
+        await Payer.findOne({ nick: nick }).populate({
+          path: "orders",
+          model: Order,
+        }),
+      ),
+    );
+
+    return orders;
+  } catch (error) {}
 }

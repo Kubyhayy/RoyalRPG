@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
 const payerSchema = new mongoose.Schema({
-  nick: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: false },
+  nick: { type: String, required: true },
+  email: { type: String, required: true },
   orders: [
     {
       type: mongoose.Schema.Types.ObjectId,
