@@ -1,7 +1,7 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 import Order from "./models/order.model";
 import Payer from "./models/payer.model";
-import { Rcon } from "rcon-client";
+// import { Rcon } from "rcon-client";
 
 let isConnected = false;
 
@@ -47,44 +47,44 @@ export async function createOrder({ name, days, price, payerId }: OrderParams) {
   }
 }
 
-export async function grantOrderItem(orderId: string) {
-  try {
-    await connectToDB();
-    const order = await Order.findById(orderId).populate({
-      path: "payer",
-      model: Payer,
-    });
+// export async function grantOrderItem(orderId: string) {
+//   try {
+//     await connectToDB();
+//     const order = await Order.findById(orderId).populate({
+//       path: "payer",
+//       model: Payer,
+//     });
 
-    if (!order) throw new Error("Order which item was to grant does not exist");
+//     if (!order) throw new Error("Order which item was to grant does not exist");
 
-    if (
-      !process.env.RCON_HOST ||
-      !process.env.RCON_PASSWORD ||
-      !process.env.RCON_PORT
-    ) {
-      throw new Error("Invalid rcon data");
-    }
-    const rcon = await Rcon.connect({
-      host: process.env.RCON_HOST,
-      password: process.env.RCON_PASSWORD,
-      port: parseInt(process.env.RCON_PORT),
-    });
+//     if (
+//       !process.env.RCON_HOST ||
+//       !process.env.RCON_PASSWORD ||
+//       !process.env.RCON_PORT
+//     ) {
+//       throw new Error("Invalid rcon data");
+//     }
+//     const rcon = await Rcon.connect({
+//       host: process.env.RCON_HOST,
+//       password: process.env.RCON_PASSWORD,
+//       port: parseInt(process.env.RCON_PORT),
+//     });
 
-    const response = await rcon.send(
-      `grant ${order.payer.nick} ${String(order.name).replaceAll(" ", "_")} ${
-        order.days
-      }`,
-    );
-    rcon.end();
-    if (response === "Success") {
-      await Order.findByIdAndUpdate(orderId, {
-        $set: { granted: true },
-      });
-    }
-  } catch (error: any) {
-    throw new Error(`Failed to grant order's item ${error.message}`);
-  }
-}
+//     const response = await rcon.send(
+//       `grant ${order.payer.nick} ${String(order.name).replaceAll(" ", "_")} ${
+//         order.days
+//       }`,
+//     );
+//     rcon.end();
+//     if (response === "Success") {
+//       await Order.findByIdAndUpdate(orderId, {
+//         $set: { granted: true },
+//       });
+//     }
+//   } catch (error: any) {
+//     throw new Error(`Failed to grant order's item ${error.message}`);
+//   }
+// }
 
 export async function fetchPayer(nick: string, email: string) {
   try {

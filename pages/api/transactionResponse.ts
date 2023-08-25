@@ -1,4 +1,4 @@
-import { createOrder, fetchPayer, grantOrderItem } from "@lib/database";
+import { createOrder, fetchPayer } from "@lib/database";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -14,17 +14,19 @@ export default async function handler(
         hiddenDescription.email,
       );
 
-      const order = await createOrder({
-        name: hiddenDescription.item_name,
-        days: hiddenDescription.days,
-        price: hiddenDescription.price,
-        payerId: payer._id,
-      });
-      await grantOrderItem(order._id);
+      console.log(payer._id);
+
+      // const order = await createOrder({
+      //   name: hiddenDescription.item_name,
+      //   days: hiddenDescription.days,
+      //   price: hiddenDescription.price,
+      //   payerId: payer._id,
+      // });
+      // await grantOrderItem(order._id);
     }
 
     res.status(200).send("TRUE");
   } catch (e) {
-    res.status(501).send({ FALSE: e });
+    res.status(500).send("Unable to handle response");
   }
 }
