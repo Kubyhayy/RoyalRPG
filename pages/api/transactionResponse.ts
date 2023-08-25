@@ -8,12 +8,7 @@ export default async function handler(
   try {
     if (req.body["tr_status"] === "TRUE") {
       const hiddenDescription = JSON.parse(req.body["tr_crc"]);
-      const rcon = await connectToRcon();
-      if (rcon) {
-        console.log("Connected with rcon");
-      } else {
-        console.log("Unable to connect with rcon");
-      }
+      await connectToRcon();
 
       const payer = await fetchPayer(
         hiddenDescription.nick,
