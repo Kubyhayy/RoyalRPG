@@ -41,15 +41,20 @@ export async function connectToRcon(): Promise<void> {
   }
   try {
     const rcon = new Rcon({
-      host: process.env.RCON_HOST,
-      password: process.env.RCON_PASSWORD,
-      port: parseInt(process.env.RCON_PORT),
-      timeout: 3000,
+      host: "s27.titanaxe.com",
+      password: "KubusiekRcon",
+      port: 55216,
+      timeout: 8000,
     });
+    // const rcon = new Rcon({
+    //   host: process.env.RCON_HOST,
+    //   password: process.env.RCON_PASSWORD,
+    //   port: parseInt(process.env.RCON_PORT),
+    //   timeout: 3000,
+    // });
     console.log("0:0");
     await rcon.connect();
-    console.log("1:1");
-    const response = await rcon.send("hej")
+    const response = await rcon.send("kill Kubyhayy");
     console.log("response");
   } catch (error: any) {
     console.log("2:2");
