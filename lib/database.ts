@@ -33,6 +33,7 @@ interface OrderParams {
 
 export async function createOrder({ name, days, price, payerId }: OrderParams) {
   try {
+    await connectToDB();
     const order = await Order.create({
       name: name,
       days: days,
@@ -48,6 +49,7 @@ export async function createOrder({ name, days, price, payerId }: OrderParams) {
 
 export async function grantOrderItem(orderId: string) {
   try {
+    await connectToDB();
     const order = await Order.findById(orderId).populate({
       path: "payer",
       model: Payer,
@@ -62,23 +64,23 @@ export async function grantOrderItem(orderId: string) {
     ) {
       throw new Error("Invalid rcon data");
     }
-    // const rcon = await Rcon.connect({
-    //   host: process.env.RCON_HOST,
-    //   password: process.env.RCON_PASSWORD,
-    //   port: parseInt(process.env.RCON_PORT),
-    // });
+    const rcon = await Rcon.connect({
+      host: process.env.RCON_HOST,
+      password: process.env.RCON_PASSWORD,
+      port: parseInt(process.env.RCON_PORT),
+    });
 
-    // const response = await rcon.send(
-    //   `grant ${order.payer.nick} ${String(order.name).replaceAll(" ", "_")} ${
-    //     order.days
-    //   }`,
-    // );
-    // rcon.end();
-    // if (response === "Success") {
-    //   await Order.findByIdAndUpdate(orderId, {
-    //     $set: { granted: true },
-    //   });
-    // }
+    const response = await rcon.send(
+      `grant ${order.payer.nick} ${String(order.name).replaceAll(" ", "_")} ${
+        order.days
+      }`,
+    );
+    rcon.end();
+    if (response === "Success") {
+      await Order.findByIdAndUpdate(orderId, {
+        $set: { granted: true },
+      });
+    }
   } catch (error: any) {
     throw new Error(`Failed to grant order's item ${error.message}`);
   }
@@ -86,6 +88,7 @@ export async function grantOrderItem(orderId: string) {
 
 export async function fetchPayer(nick: string, email: string) {
   try {
+    await connectToDB();
     let payer = await Payer.findOne({ nick: nick }, { email: email });
     if (!payer) {
       payer = Payer.create({
@@ -100,6 +103,7 @@ export async function fetchPayer(nick: string, email: string) {
 }
 export async function getAllOrdersByNick({ nick }: { nick: string }) {
   try {
+    await connectToDB();
     // It has to be like that to avoid warnings - not my fault...
     const orders = await JSON.parse(
       JSON.stringify(
