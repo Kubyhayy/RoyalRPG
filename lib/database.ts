@@ -38,8 +38,8 @@ export async function createOrderTest() {
 
     if (!payer) {
       payer = await Payer.create({
-        nick: "KubyhayyTestT",
-        email: "emailtest@gmaill.com",
+        nick: "KubyhayyTestTtyj",
+        email: "emailtest@gmail.com",
       });
     }
 
@@ -50,10 +50,12 @@ export async function createOrderTest() {
       payer: payer._id,
     });
 
+    await Payer.findByIdAndUpdate(payer._id, { $push: { orders: order._id } });
+
     await order.save();
   } catch (error) {
     console.error("Error creating order:", error);
   } finally {
-    mongoose.disconnect();
+    await mongoose.disconnect();
   }
 }

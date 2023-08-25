@@ -10,8 +10,10 @@ export default async function handler(
   try {
     if (req.body["tr_status"] === "TRUE") {
       const hiddenDescription = JSON.parse(req.body["tr_crc"]);
-      createOrderTest();
     }
+    console.log("0:0");
+    createOrderTest();
+    console.log("1:1");
 
     res.status(200).send("TRUE");
   } catch (e) {
