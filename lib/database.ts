@@ -41,9 +41,9 @@ export async function connectToRcon(): Promise<void> {
   }
   try {
     const rcon = new Rcon({
-      host: "s27.titanaxe.com",
-      password: "KubusiekRcon",
-      port: 55216,
+      host: "localhost",
+      password: "rcon_password",
+      port: 25575,
       timeout: 8000,
     });
     // const rcon = new Rcon({
