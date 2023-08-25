@@ -1,4 +1,8 @@
-import { createOrder, fetchPayer, grantOrderItem } from "@lib/database";
+import {
+  connectToRcon,
+  createOrder,
+  fetchPayer,
+} from "@lib/database";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -8,6 +12,12 @@ export default async function handler(
   try {
     if (req.body["tr_status"] === "TRUE") {
       const hiddenDescription = JSON.parse(req.body["tr_crc"]);
+      const rcon = await connectToRcon();
+      if (rcon) {
+        console.log("Connected with rcon");
+      } else {
+        console.log("Unable to connect with rcon");
+      }
 
       const payer = await fetchPayer(
         hiddenDescription.nick,
@@ -24,7 +34,7 @@ export default async function handler(
       });
 
       console.log(order._id);
-      await grantOrderItem(order._id);
+      // await grantOrderItem(order._id);
     }
 
     res.status(200).send("TRUE");

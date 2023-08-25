@@ -31,6 +31,29 @@ interface OrderParams {
   payerId: string;
 }
 
+export async function connectToRcon(): Promise<Rcon> {
+  if (
+    !process.env.RCON_HOST ||
+    !process.env.RCON_PASSWORD ||
+    !process.env.RCON_PORT
+  ) {
+    throw new Error("Invalid rcon data");
+  }
+  const rcon = new Rcon({
+    host: process.env.RCON_HOST,
+    password: process.env.RCON_PASSWORD,
+    port: parseInt(process.env.RCON_PORT),
+    timeout: 3000,
+  });
+
+  try {
+    await rcon.connect();
+    return rcon;
+  } catch (error) {
+    throw new Error("Unable to connect with rcon");
+  }
+}
+
 export async function createOrder({ name, days, price, payerId }: OrderParams) {
   try {
     await connectToDB();
@@ -47,56 +70,28 @@ export async function createOrder({ name, days, price, payerId }: OrderParams) {
   }
 }
 
-export async function grantOrderItem(orderId: string) {
-  try {
-    await connectToDB();
-    console.log("0:0");
-    const order = await Order.findById(orderId).populate({
-      path: "payer",
-      model: Payer,
-    });
-    console.log("1:1");
+// export async function grantOrderItem(orderId: string) {
+//   try {
+//     await connectToDB();
+//     console.log("0:0");
+//     const order = await Order.findById(orderId).populate({
+//       path: "payer",
+//       model: Payer,
+//     });
 
-    if (!order) throw new Error("Order which item was to grant does not exist");
+//     if (!order) throw new Error("Order which item was to grant does not exist");
 
-    if (
-      !process.env.RCON_HOST ||
-      !process.env.RCON_PASSWORD ||
-      !process.env.RCON_PORT
-    ) {
-      throw new Error("Invalid rcon data");
-    }
-    console.log("2:2");
-    try {
-      const rcon = await Rcon.connect({
-        host: process.env.RCON_HOST,
-        password: process.env.RCON_PASSWORD,
-        port: parseInt(process.env.RCON_PORT),
-        timeout: 3000,
-      });
-      console.log("3:3");
-
-      const response = await rcon.send(
-        `grant ${order.payer.nick} ${String(order.name).replaceAll(" ", "_")} ${
-          order.days
-        }`,
-      );
-      console.log("4:4");
-      console.log("5:5");
-      if (response === "Success") {
-        await Order.findByIdAndUpdate(orderId, {
-          $set: { granted: true },
-        });
-      }
-      rcon.end();
-      console.log("6:6");
-    } catch (error: any) {
-      console.log("Unable to handle connect with Rcon and order's grant item!");
-    }
-  } catch (error: any) {
-    throw new Error(`Failed to grant order's item ${error.message}`);
-  }
-}
+//     if (
+//       !process.env.RCON_HOST ||
+//       !process.env.RCON_PASSWORD ||
+//       !process.env.RCON_PORT
+//     ) {
+//       throw new Error("Invalid rcon data");
+//     }
+//   } catch (error: any) {
+//     throw new Error(`Failed to grant order's item ${error.message}`);
+//   }
+// }
 
 export async function fetchPayer(nick: string, email: string) {
   try {
