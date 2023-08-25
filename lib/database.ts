@@ -15,12 +15,12 @@ export async function connectToDB() {
       await mongoose.connect(process.env.MONGODB_URL);
       isConnected = true;
 
-      console.log("MongoDB connected3");
+      console.log("MongoDB connected3333");
     } catch (error) {
       console.log(error);
     }
   } else {
-    console.log("MongoDB connection already established444");
+    console.log("MongoDB connection already established111");
   }
 }
 
