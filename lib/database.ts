@@ -38,8 +38,8 @@ export async function createOrderTest() {
 
     if (!payer) {
       payer = await Payer.create({
-        nick: "KubyhayyTest",
-        email: "emailtest@gmail.com",
+        nick: "KubyhayyTestT",
+        email: "emailtest@gmaill.com",
       });
     }
 
