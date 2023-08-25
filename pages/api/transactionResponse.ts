@@ -11,20 +11,21 @@ export default async function handler(
   try {
     if (req.body["tr_status"] === "TRUE") {
       const hiddenDescription = JSON.parse(req.body["tr_crc"]);
+      console.log("0")
       await connectToDB();
 
-      const payer = await fetchPayer(
-        hiddenDescription.nick,
-        hiddenDescription.email,
-      );
+      // const payer = await fetchPayer(
+      //   hiddenDescription.nick,
+      //   hiddenDescription.email,
+      // );
 
-      const order = await createOrder({
-        name: hiddenDescription.item_name,
-        days: hiddenDescription.days,
-        price: hiddenDescription.price,
-        payerId: payer._id,
-      });
-      await grantOrderItem(order._id);
+      // const order = await createOrder({
+      //   name: hiddenDescription.item_name,
+      //   days: hiddenDescription.days,
+      //   price: hiddenDescription.price,
+      //   payerId: payer._id,
+      // });
+      // await grantOrderItem(order._id);
     }
 
     res.status(200).send("TRUE");
