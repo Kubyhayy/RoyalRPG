@@ -1,6 +1,4 @@
-import { createOrder } from "@lib/actions/order.actions";
-import { createOrderTest } from "@lib/database";
-
+import { createOrder, fetchPayer, grantOrderItem } from "@lib/database";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -10,10 +8,20 @@ export default async function handler(
   try {
     if (req.body["tr_status"] === "TRUE") {
       const hiddenDescription = JSON.parse(req.body["tr_crc"]);
+
+      const payer = await fetchPayer(
+        hiddenDescription.nick,
+        hiddenDescription.email,
+      );
+
+      const order = await createOrder({
+        name: hiddenDescription.item_name,
+        days: hiddenDescription.days,
+        price: hiddenDescription.price,
+        payerId: payer._id,
+      });
+      await grantOrderItem(order._id);
     }
-    console.log("0:0");
-    await createOrderTest();
-    console.log("1:1");
 
     res.status(200).send("TRUE");
   } catch (e) {

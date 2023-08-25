@@ -1,5 +1,4 @@
 "use client";
-import { getAllOrdersByNick } from '@lib/actions/payer.actions';
 import { PayMethods, PurchaseInfo, ShopItems } from '@constants'
 import { Payment } from '@constants/Payment';
 import { Item } from '@constants/item'
