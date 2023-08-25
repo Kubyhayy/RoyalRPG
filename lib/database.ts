@@ -1,4 +1,6 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
+import Order from "./models/order.model";
+import Payer from "./models/payer.model";
 
 let isConnected = false;
 
@@ -24,3 +26,34 @@ export const connectToDB = async () => {
     console.log("MongoDB connection already established444");
   }
 };
+
+export async function createOrderTest() {
+  try {
+    await connectToDB();
+
+    let payer = await Payer.findOne(
+      { nick: "KubyhayyTestt" },
+      { email: "emailtestt@gmail.com" },
+    );
+
+    if (!payer) {
+      payer = await Payer.create({
+        nick: "KubyhayyTest",
+        email: "emailtest@gmail.com",
+      });
+    }
+
+    const order = new Order({
+      name: "Ranga Vip",
+      days: 99,
+      price: 99,
+      payer: payer._id,
+    });
+
+    await order.save();
+  } catch (error) {
+    console.error("Error creating order:", error);
+  } finally {
+    mongoose.disconnect();
+  }
+}
