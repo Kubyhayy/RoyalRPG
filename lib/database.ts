@@ -85,7 +85,7 @@ export async function grantOrderItem(orderId: string) {
     Payer.findByIdAndUpdate(order.payer._id, {
       $set: { granted: true },
     });
-    // }
+    // } todo
   } catch (error: any) {
     console.log(`Failed to grant order's item ${error.message}`);
     return;
