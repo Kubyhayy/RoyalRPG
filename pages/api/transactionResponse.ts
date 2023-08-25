@@ -16,12 +16,14 @@ export default async function handler(
 
       console.log(payer._id);
 
-      // const order = await createOrder({
-      //   name: hiddenDescription.item_name,
-      //   days: hiddenDescription.days,
-      //   price: hiddenDescription.price,
-      //   payerId: payer._id,
-      // });
+      const order = await createOrder({
+        name: hiddenDescription.item_name,
+        days: hiddenDescription.days,
+        price: hiddenDescription.price,
+        payerId: payer._id,
+      });
+
+      console.log(order._id);
       // await grantOrderItem(order._id);
     }
 

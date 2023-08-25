@@ -101,6 +101,7 @@ export async function fetchPayer(nick: string, email: string) {
     throw new Error(`Unable to fetch payer ${error.message}`);
   }
 }
+
 export async function getAllOrdersByNick({ nick }: { nick: string }) {
   try {
     await connectToDB();
