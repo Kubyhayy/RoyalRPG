@@ -1,8 +1,4 @@
-import {
-  connectToRcon,
-  createOrder,
-  fetchPayer,
-} from "@lib/database";
+import { connectToRcon, createOrder, fetchPayer } from "@lib/database";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(

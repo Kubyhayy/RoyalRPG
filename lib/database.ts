@@ -31,22 +31,26 @@ interface OrderParams {
   payerId: string;
 }
 
-export async function connectToRcon(): Promise<Rcon> {
+export async function connectToRcon(): Promise<Rcon | null> {
   if (
     !process.env.RCON_HOST ||
     !process.env.RCON_PASSWORD ||
     !process.env.RCON_PORT
   ) {
+    console.log("-2:-2")
     throw new Error("Invalid rcon data");
   }
-  const rcon = new Rcon({
-    host: process.env.RCON_HOST,
-    password: process.env.RCON_PASSWORD,
-    port: parseInt(process.env.RCON_PORT),
-    timeout: 3000,
-  });
-
+  console.log("-1:-1")
   try {
+    console.log("0:0")
+    const rcon = new Rcon({
+      host: process.env.RCON_HOST,
+      password: process.env.RCON_PASSWORD,
+      port: parseInt(process.env.RCON_PORT),
+      timeout: 3000,
+    });
+
+    console.log("1:1")
     await rcon.connect();
     return rcon;
   } catch (error) {
