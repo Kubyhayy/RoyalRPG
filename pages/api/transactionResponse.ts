@@ -1,4 +1,4 @@
-import { createOrder, fetchPayer } from "@lib/database";
+import { createOrder, fetchPayer, grantOrderItem } from "@lib/database";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -24,7 +24,7 @@ export default async function handler(
       });
 
       console.log(order._id);
-      // await grantOrderItem(order._id);
+      await grantOrderItem(order._id);
     }
 
     res.status(200).send("TRUE");
