@@ -12,7 +12,7 @@ export default async function handler(
       const hiddenDescription = JSON.parse(req.body["tr_crc"]);
     }
     console.log("0:0");
-    createOrderTest();
+    await createOrderTest();
     console.log("1:1");
 
     res.status(200).send("TRUE");
