@@ -1,10 +1,8 @@
 import Order from "@lib/models/order.model";
 import Payer from "@lib/models/payer.model";
-import { connectToDB } from "@lib/database";
 
 export async function fetchPayer(nick: string, email: string) {
   try {
-    await connectToDB();
     let payer = await Payer.findOne({ nick: nick }, { email: email });
     if (!payer) {
       payer = Payer.create({
@@ -20,7 +18,6 @@ export async function fetchPayer(nick: string, email: string) {
 
 export async function getAllOrdersByNick({ nick }: { nick: string }) {
   try {
-    await connectToDB();
     // It has to be like that to avoid warnings - not my fault...
     const orders = await JSON.parse(
       JSON.stringify(

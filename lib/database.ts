@@ -8,7 +8,6 @@ export const connectToDB = async () => {
       console.log("Missing MongoDB URL");
       return;
     }
-
     try {
       if (mongoose.connection.readyState !== 1) {
         // Check if not already connected

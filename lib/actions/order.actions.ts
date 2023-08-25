@@ -1,6 +1,5 @@
 import Order from "@lib/models/order.model";
 import Payer from "@lib/models/payer.model";
-import { connectToDB } from "@lib/database";
 import { Rcon } from "rcon-client";
 
 interface Params {
@@ -11,7 +10,6 @@ interface Params {
 }
 export async function createOrder({ name, days, price, payerId }: Params) {
   try {
-    await connectToDB();
     const order = await Order.create({
       name: name,
       days: days,
@@ -27,8 +25,6 @@ export async function createOrder({ name, days, price, payerId }: Params) {
 
 export async function grantOrderItem(orderId: string) {
   try {
-    await connectToDB();
-
     const order = await Order.findById(orderId).populate({
       path: "payer",
       model: Payer,
