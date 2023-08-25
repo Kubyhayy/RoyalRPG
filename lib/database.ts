@@ -43,7 +43,7 @@ export async function connectToRcon(): Promise<void> {
     const rcon = new Rcon({
       host: "localhost",
       password: "rcon_password",
-      port: 25575,
+      port: 25565,
       timeout: 8000,
     });
     // const rcon = new Rcon({
