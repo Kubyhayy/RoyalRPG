@@ -27,14 +27,14 @@ export async function createOrderTest() {
     await connectToDB();
 
     let payer = await Payer.findOne(
-      { nick: "KubyhayyTestt" },
-      { email: "emailtestt@gmail.com" },
+      { nick: "KubyhayyTesttt" },
+      { email: "emailtestt@gmaill.com" },
     );
 
     if (!payer) {
       payer = await Payer.create({
-        nick: "KubyhayyTestTtyj",
-        email: "emailtest@gmail.com",
+        nick: "KubyhayyTestTtytrhj",
+        email: "emailtest@gmailhrh.com",
       });
     }
 
@@ -50,7 +50,5 @@ export async function createOrderTest() {
     await order.save();
   } catch (error) {
     console.error("Error creating order:", error);
-  } finally {
-    await mongoose.disconnect();
   }
 }
