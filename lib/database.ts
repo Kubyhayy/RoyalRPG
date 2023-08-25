@@ -82,7 +82,7 @@ export async function grantOrderItem(orderId: string) {
     // if (response === "Successfuly granted") {
     console.log("0:0");
     console.log(order.payer._id);
-    Payer.findByIdAndUpdate(order.payer._id, {
+   await Payer.findByIdAndUpdate(order.payer._id, {
       $set: { granted: true },
     });
     // } todo
