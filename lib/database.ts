@@ -5,7 +5,7 @@ import { Rcon } from "rcon-client";
 
 let isConnected = false;
 
-export const connectToDB = async () => {
+export async function connectToDB() {
   if (!isConnected) {
     if (!process.env.MONGODB_URL) {
       console.log("Missing MongoDB URL");
@@ -22,7 +22,7 @@ export const connectToDB = async () => {
   } else {
     console.log("MongoDB connection already established444");
   }
-};
+}
 
 interface OrderParams {
   name: string;
