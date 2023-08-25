@@ -14,13 +14,12 @@ export async function connectToDB() {
     try {
       await mongoose.connect(process.env.MONGODB_URL);
       isConnected = true;
-
-      console.log("MongoDB connected3333");
+      console.log("MongoDB connected");
     } catch (error) {
       console.log(error);
     }
   } else {
-    console.log("MongoDB connection already established111");
+    console.log("MongoDB connection is already established");
   }
 }
 
@@ -29,37 +28,6 @@ interface OrderParams {
   days: number;
   price: number;
   payerId: string;
-}
-
-export async function connectToRcon(): Promise<void> {
-  if (
-    !process.env.RCON_HOST ||
-    !process.env.RCON_PASSWORD ||
-    !process.env.RCON_PORT
-  ) {
-    throw new Error("Invalid rcon data");
-  }
-  try {
-    const rcon = new Rcon({
-      host: "localhost",
-      password: "rcon_password",
-      port: 25565,
-      timeout: 8000,
-    });
-    // const rcon = new Rcon({
-    //   host: process.env.RCON_HOST,
-    //   password: process.env.RCON_PASSWORD,
-    //   port: parseInt(process.env.RCON_PORT),
-    //   timeout: 3000,
-    // });
-    console.log("0:0");
-    await rcon.connect();
-    const response = await rcon.send("kill Kubyhayy");
-    console.log("response");
-  } catch (error: any) {
-    console.log("2:2");
-    throw new Error(`Unable to connect with rcon ${error?.message}`);
-  }
 }
 
 export async function createOrder({ name, days, price, payerId }: OrderParams) {
@@ -74,33 +42,55 @@ export async function createOrder({ name, days, price, payerId }: OrderParams) {
     await Payer.findByIdAndUpdate(payerId, { $push: { orders: order._id } });
     return order;
   } catch (error: any) {
-    throw new Error(`Failed to create order ${error?.message}`);
+    console.log(`Failed to create order ${error?.message}`);
+    return;
   }
 }
 
-// export async function grantOrderItem(orderId: string) {
-//   try {
-//     await connectToDB();
-//     console.log("0:0");
-//     const order = await Order.findById(orderId).populate({
-//       path: "payer",
-//       model: Payer,
-//     });
+export async function grantOrderItem(orderId: string) {
+  try {
+    await connectToDB();
 
-//     if (!order) throw new Error("Order which item was to grant does not exist");
+    const order = await Order.findById(orderId).populate({
+      path: "payer",
+      model: Payer,
+    });
 
-//     if (
-//       !process.env.RCON_HOST ||
-//       !process.env.RCON_PASSWORD ||
-//       !process.env.RCON_PORT
-//     ) {
-//       throw new Error("Invalid rcon data");
-//     }
-//   } catch (error: any) {
-//     throw new Error(`Failed to grant order's item ${error.message}`);
-//   }
-// }
+    if (!order) {
+      console.log("Order which item was to grant does not exist");
+      return;
+    }
 
+    if (
+      !process.env.RCON_HOST ||
+      !process.env.RCON_PASSWORD ||
+      !process.env.RCON_PORT
+    ) {
+      console.log("Invalid RCon data");
+      return;
+    }
+    const rcon = new Rcon({
+      host: process.env.RCON_HOST,
+      password: process.env.RCON_PASSWORD,
+      port: parseInt(process.env.RCON_PORT),
+      timeout: 3500,
+    });
+    await rcon.connect();
+    const response = await rcon.send(
+      `grant ${order.nick} ${order.name} ${order.days}`,
+    );
+    // if (response === "Successfuly granted") {
+    console.log("0:0");
+    console.log(order.payer._id);
+    Payer.findByIdAndUpdate(order.payer._id, {
+      $set: { granted: true },
+    });
+    // }
+  } catch (error: any) {
+    console.log(`Failed to grant order's item ${error.message}`);
+    return;
+  }
+}
 export async function fetchPayer(nick: string, email: string) {
   try {
     await connectToDB();
@@ -113,7 +103,8 @@ export async function fetchPayer(nick: string, email: string) {
     }
     return payer;
   } catch (error: any) {
-    throw new Error(`Unable to fetch payer ${error.message}`);
+    console.log(`Unable to fetch payer ${error.message}`);
+    return;
   }
 }
 

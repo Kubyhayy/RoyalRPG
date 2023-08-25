@@ -21,7 +21,7 @@ const Hero = () => {
           >
             Royal
           </span>
-          <span className='font-palanquin text-white ml-2'>RPGwfw</span>
+          <span className='font-palanquin text-white ml-2'>RPG</span>
         </h1>
         <p className='max-sm:hidden text-grey font-palanquin text-[16px] w-[100%] sm:w-[110%] lg:w-[160%]  sm:text-xl  text-center tracking-[2.2px]'>Dołącz do niezwykłych przygód i stań się bohaterem! Wybierz swoją klasę, walcz z bossami, handluj przedmiotami, buduj oszałamiające struktury i poznaj wspaniałych graczy. Czekają na Ciebie nieograniczone możliwości i niesamowita społeczność.</p>
         <p className='sm:hidden text-grey font-palanquin text-[16px] w-[110%] sm:w-[130%] lg:w-[160%]  sm:text-xl  text-center tracking-[2.2px]'>Dołącz do niezwykłych przygód i stań się bohaterem! Czekają na Ciebie nieograniczone możliwości i niesamowita społeczność.</p>
